@@ -15,7 +15,6 @@ env:
   IMAGE_NAME: techlogix-inventory
 
 jobs:
-  # ── JOB 1 : TESTS ────────────────────────────────────────────────────────
   test:
     name: 🧪 Test Application
     runs-on: ubuntu-latest
