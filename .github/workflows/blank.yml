@@ -29,11 +29,11 @@ jobs:
           node-version: '20'
 
       - name: 📦 Install dependencies
-        working-directory: file
+        working-directory: files
         run: npm install
 
       - name: 🔍 Check application syntax
-        working-directory: file
+        working-directory: files
         run: node --check server.js
 
   # ── JOB 2 : BUILD & PUSH ─────────────────────────────────────────────────
