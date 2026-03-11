@@ -19,7 +19,6 @@ jobs:
   test:
     name: 🧪 Test Application
     runs-on: ubuntu-latest
-
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v4
@@ -28,21 +27,20 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          # On supprime la ligne 'cache: npm' pour éviter l'erreur du lock file
 
       - name: 📦 Install dependencies
-        # On force l'installation sans chercher de fichier lock
-        run: npm install 
+        working-directory: file
+        run: npm install
 
       - name: 🔍 Check application syntax
-        # Assure-toi que server.js est bien à la racine du projet
+        working-directory: file
         run: node --check server.js
 
   # ── JOB 2 : BUILD & PUSH ─────────────────────────────────────────────────
   build-and-push:
     name: 🐳 Build & Push Docker Image
     runs-on: ubuntu-latest
-    needs: test 
+    needs: test
 
     steps:
       - name: 📥 Checkout code
@@ -79,5 +77,4 @@ jobs:
           cache-to: type=gha,mode=max
 
       - name: ✅ Summary
-        run: |
-          echo "Build terminé avec succès pour ${{ env.IMAGE_NAME }}"
+        run: echo "Build terminé avec succès pour ${{ env.IMAGE_NAME }}"
