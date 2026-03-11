@@ -33,7 +33,7 @@ jobs:
 
       - name: 📦 Install dependencies
         # npm ci est plus rapide et propre pour les pipelines CI
-        run: npm ci || npm install 
+        run: npm install 
 
       - name: 🔍 Check application syntax
         # On vérifie que le fichier principal n'a pas d'erreur de syntaxe
