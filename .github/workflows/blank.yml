@@ -37,7 +37,7 @@ jobs:
         run: node --check server.js
 
   # ── JOB 2 : BUILD & PUSH ─────────────────────────────────────────────────
-  build-and-push:
+   build-and-push:
     name: 🐳 Build & Push Docker Image
     runs-on: ubuntu-latest
     needs: test
@@ -59,7 +59,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.IMAGE_NAME }}
+          images: bakary77/tectechlogix-inventory
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
             type=raw,value=v1.0
@@ -75,6 +75,17 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: ✅ Summary
+        run: echo "Build terminé avec succès pour ${{ env.IMAGE_NAME }}"
+
+
+
+
+
+
+
+
 
       - name: ✅ Summary
         run: echo "Build terminé avec succès pour ${{ env.IMAGE_NAME }}"
