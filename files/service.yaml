@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: techlogix-inventory-service
+  namespace: default
+  labels:
+    app: techlogix-inventory
+    team: devops
+spec:
+  # LoadBalancer pour un accès externe via IP publique
+  # Pour Minikube, utilisez NodePort (commentez LoadBalancer et décommentez NodePort)
+  type: LoadBalancer
+  selector:
+    app: techlogix-inventory
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80          # Port exposé à l'extérieur
+      targetPort: 3000  # Port interne du container
+      # nodePort: 30080  # Décommenter si type: NodePort (range 30000-32767)

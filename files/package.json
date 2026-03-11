@@ -1,0 +1,16 @@
+{
+  "name": "techlogix-inventory",
+  "version": "1.0.0",
+  "description": "TechLogix Inventory Management System",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["inventory", "devops", "kubernetes"],
+  "author": "TechLogix",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

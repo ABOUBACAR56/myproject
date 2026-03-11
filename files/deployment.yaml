@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: techlogix-inventory
+  namespace: default
+  labels:
+    app: techlogix-inventory
+    version: "1.0"
+    team: devops
+spec:
+  # Haute disponibilité : 3 réplicas minimum
+  replicas: 3
+  selector:
+    matchLabels:
+      app: techlogix-inventory
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1        # 1 pod en plus pendant la mise à jour
+      maxUnavailable: 0  # Aucun pod indisponible (zero-downtime)
+  template:
+    metadata:
+      labels:
+        app: techlogix-inventory
+        version: "1.0"
+    spec:
+      containers:
+        - name: techlogix-inventory
+          # ⚠️ Remplacez <VOTRE_USERNAME> par votre username Docker Hub
+          image: <VOTRE_USERNAME>/techlogix-inventory:v1.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: PORT
+              value: "3000"
+          # Liveness Probe : redémarre le pod si l'app est bloquée
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            failureThreshold: 3
+          # Readiness Probe : retire le pod du LB s'il n'est pas prêt
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+          # Limites de ressources
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+            limits:
+              memory: "128Mi"
+              cpu: "250m"
+      # Politique de redémarrage
+      restartPolicy: Always
+      # Assure la distribution des pods sur différents noeuds
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: techlogix-inventory
